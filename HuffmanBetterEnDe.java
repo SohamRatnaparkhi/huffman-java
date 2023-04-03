@@ -7,13 +7,6 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
-/**
- * Assignment 1
- * Submitted by: 
- * Student 1: Sofia Naer 	ID# 333815397
- * Student 2: Roi Yehezkel 	ID# 315331959
- */
-
 public class HuffmanBetterEnDe extends HuffmanEncoderDecoder {
 	PriorityQueue<Node> minHeapEn;
 	PriorityQueue<Node> minHeapDe;
@@ -40,6 +33,7 @@ public class HuffmanBetterEnDe extends HuffmanEncoderDecoder {
 			writeSymbol(save, freq, minHeapEn); // write the symbol to file
 			rootEn = buildHuffmanTree(minHeapEn);
 			createHuffmanCodeDe(rootEn, "", mapEn); // translate huffman tree to huffman code
+			System.out.println(mapEn);
 			encodeDe(save, data, mapEn);
 			System.out.println("The file has encoded");
 			save.close();
@@ -116,13 +110,16 @@ public class HuffmanBetterEnDe extends HuffmanEncoderDecoder {
 				int p = StringToInt(s);
 				f[p]++;
 			} else {
-				f[(byte) d[i] + 128]++; // if the number of bytes in the file is odd then the last byte we count as a one character
+				f[(byte) d[i] + 128]++; // if the number of bytes in the file is odd then the last byte we count as a
+										// one character
 			}
 		}
 		/*
-		 * if the number of frequency of every pair is more than 100 so we give him a node
-		 * else we break him to two seperate parts of two character and count them in the 
-		 * right place 
+		 * if the number of frequency of every pair is more than 100 so we give him a
+		 * node
+		 * else we break him to two seperate parts of two character and count them in
+		 * the
+		 * right place
 		 */
 		for (int i = 256; i < f.length; i++) {
 			String s = Integer.toBinaryString(i);
@@ -174,12 +171,14 @@ public class HuffmanBetterEnDe extends HuffmanEncoderDecoder {
 		String encodedData = "";
 		for (int i = 0; i < d.length; i++) {
 			int key = d[i];
-			// we want to read the next byte of data to check if we have symbol for both of them together
+			// we want to read the next byte of data to check if we have symbol for both of
+			// them together
 			if (i < d.length - 1) {
 				String c1 = IntToString(d[i]);
 				String c2 = IntToString(d[i + 1]);
 				if (map.containsKey(StringToInt(c1 + c2))) {
-					if (d[i] != 0) // the combinatin of c1+c2 is greater than 255 so we want skip on bytes in the file
+					if (d[i] != 0) // the combinatin of c1+c2 is greater than 255 so we want skip on bytes in the
+									// file
 					{
 						key = StringToInt(c1 + c2);
 						i++;
@@ -210,7 +209,8 @@ public class HuffmanBetterEnDe extends HuffmanEncoderDecoder {
 		int oneByte = in.readInt(); // read the number of symbol with one character
 		int twoBytes = in.readInt(); // read the number of symbol with two character
 		/*
-		 * we read in loop the symbol with two character and there frequency and add them 
+		 * we read in loop the symbol with two character and there frequency and add
+		 * them
 		 * as a new node to the min heap
 		 */
 		for (int i = 0; i < twoBytes; i++) {
@@ -220,7 +220,8 @@ public class HuffmanBetterEnDe extends HuffmanEncoderDecoder {
 			heap.add(new Node((byte) ch1, (byte) ch2, freq));
 		}
 		/*
-		 * we read in loop the symbol with one character and there frequency and add them 
+		 * we read in loop the symbol with one character and there frequency and add
+		 * them
 		 * as a new node to the min heap
 		 */
 		for (int i = 0; i < oneByte; i++) {
@@ -250,6 +251,10 @@ public class HuffmanBetterEnDe extends HuffmanEncoderDecoder {
 			out.write(current.ch2);
 		}
 		return s.substring(i);
+	}
+
+	public HashMap<Integer, String> getHuffmanMap() {
+		return mapEn;
 	}
 
 }
